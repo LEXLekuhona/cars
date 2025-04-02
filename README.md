@@ -3,7 +3,7 @@
 ### Установка
 
 ```shell
-git clone https://github.com/LEXLekuhona/CarsDB.git
+git clone https://github.com/LEXLekuhona/cars.git
 cd cars-db
 yarn install
 ```
