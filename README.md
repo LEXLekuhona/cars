@@ -11,7 +11,7 @@ yarn install
 ### Запуск в режиме разработки
 
 ```shell
-yarn dev
+yarn run dev
 ```
 
 ## Стек
