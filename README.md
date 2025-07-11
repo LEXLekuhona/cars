@@ -4,7 +4,7 @@
 
 ```shell
 git clone https://github.com/LEXLekuhona/cars.git
-cd cars-db
+cd cars
 yarn install
 ```
 
