@@ -6,7 +6,6 @@ import Cookies from 'js-cookie'
 axios.defaults.baseURL = 'http://185.239.50.252:8080'
 
 
-
 export const login = createAsyncThunk('auth/login', async ({ username, password }) => {
     
     const data = new URLSearchParams({

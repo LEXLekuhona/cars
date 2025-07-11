@@ -11,6 +11,7 @@ import Generation from '../page/generation/Generation'
 import Home from '../page/home/Home'
 import Model from '../page/model/Model'
 import NotFound from '../page/notFound/NotFound'
+import Year from '../page/year/Year'
 
 function App() {
   const token = useSelector((state) => state.auth.token) || Cookies.get('token')
@@ -29,6 +30,7 @@ function App() {
               <Route path='brands/*' element={<Brands />} />
               <Route path='models' element={<Model />} />
               <Route path='generations' element={<Generation />} />
+              <Route path='year' element={<Year />} />
               <Route path='*' element={<NotFound />} />
             </Routes>
             <Footer />
