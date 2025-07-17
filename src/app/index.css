@@ -1,0 +1,17 @@
+/* DataTables: поиск и селектор количества записей на одной строке */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 16px;
+}
+.dataTables_wrapper .dataTables_filter {
+  float: right;
+  margin-right: 0;
+}
+.dataTables_wrapper .dataTables_length {
+  float: left;
+}
+.dataTables_wrapper .dataTables_filter input {
+  margin-left: 0.5em;
+}
