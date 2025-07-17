@@ -40,9 +40,9 @@ function Brands() {
 						</div>
 					</div>
 				</div>
-				{loading && <div>Загрузка...</div>}
-				{error && <div style={{ color: 'red' }}>{error}</div>}
-				<Table brands={brands} />
+				<div style={{ position: 'relative' }}>
+					<Table brands={brands} loading={loading} />
+				</div>
 			</div>
 			<aside className="control-sidebar control-sidebar-dark"></aside>
 		</>

@@ -36,9 +36,10 @@ function Generation() {
 						</div>
 					</div>
 				</div>
-				{loading && <div>Загрузка...</div>}
-				{error && <div style={{ color: 'red' }}>{error}</div>}
-				<Table generations={generations} />
+				<div style={{ position: 'relative' }}>
+					<Table generations={generations} loading={loading} />
+					
+				</div>
 			</div>
 			<aside className="control-sidebar control-sidebar-dark"></aside>
 		</>
