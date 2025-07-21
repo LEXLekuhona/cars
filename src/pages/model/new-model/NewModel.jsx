@@ -2,14 +2,14 @@ import Cookies from 'js-cookie'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
-function NewBrands() {
-	document.title = 'CarsDB - Создать бренд'
+function NewModel() {
+	document.title = 'CarsDB - Создать модель'
 	const token = useSelector((state) => state.auth.token) || Cookies.get('token')
 	const [name, setName] = useState('')
 	const [description, setDescription] = useState('')
 
 
-	const postBrands = async () => {
+	const postModel = async () => {
 		const data = {
 			title: name,
 			// model_ids: [
@@ -18,7 +18,7 @@ function NewBrands() {
 		}
 		console.log(data)
 		// try {
-		// 	const response = await axios.post(`http://185.239.50.252:8080/brands`, data, {
+		// 	const response = await axios.post(`${BASE_URL}/model`, data, {
 		// 		headers: {
 		// 			Authorization: `Bearer ${token}`,
 		// 			Accept: 'application/json',
@@ -35,7 +35,7 @@ function NewBrands() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		postBrands()
+		postModel()
 	}
 	return (
 		<>
@@ -44,7 +44,7 @@ function NewBrands() {
 					<div className="container-fluid">
 						<div className="row mb-2">
 							<div className="col-sm-6">
-								<h1 className="m-0">Создать бренд</h1>
+								<h1 className="m-0">Создать модель</h1>
 							</div>
 						</div>
 					</div>
@@ -108,4 +108,4 @@ function NewBrands() {
 		</>
 	)
 }
-export default NewBrands
+export default NewModel

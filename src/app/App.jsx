@@ -1,3 +1,10 @@
+import Brands from '@pages/brands/Brands'
+import Generation from '@pages/generation/Generation'
+import Home from '@pages/home/Home'
+import Model from '@pages/model/Model'
+import NotFound from '@pages/notFound/NotFound'
+import Year from '@pages/year/Year'
+import { STORAGE_KEYS } from '@shared/config'
 import Auth from '@widgets/Auth/Auth'
 import Footer from '@widgets/Footer/Footer'
 import Navbar from '@widgets/Navbar/Navbar'
@@ -6,15 +13,9 @@ import Sidebar from '@widgets/Sidebar/Sidebar'
 import Cookies from 'js-cookie'
 import { useSelector } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import Brands from '../page/brands/Brands'
-import Generation from '../page/generation/Generation'
-import Home from '../page/home/Home'
-import Model from '../page/model/Model'
-import NotFound from '../page/notFound/NotFound'
-import Year from '../page/year/Year'
 
 function App() {
-  const token = useSelector((state) => state.auth.token) || Cookies.get('token')
+  const token = useSelector((state) => state.auth.token) || Cookies.get(STORAGE_KEYS.token)
 
 
   return (

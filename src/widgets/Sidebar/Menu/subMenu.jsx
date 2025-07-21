@@ -1,7 +1,6 @@
+import { menuItems } from '@utils/data'
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { menuItems } from '../../../utils/data'
-
 
 
 // Функция для рендера заголовка

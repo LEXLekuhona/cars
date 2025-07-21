@@ -1,7 +1,7 @@
+import { login } from "@features/auth/authSlice"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import { login } from "../../features/auth/authSlice"
 
 
 function Auth() {
@@ -16,14 +16,14 @@ function Auth() {
 
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
-        dispatch(login({username, password}))
-        .then((action) => {
-            if(action.type === 'auth/login/fulfilled'){
-                navigate('/brands')
-            }
-        })
+        dispatch(login({ username, password }))
+            .then((action) => {
+                if (action.type === 'auth/login/fulfilled') {
+                    navigate('/brands')
+                }
+            })
     }
 
     return (
@@ -36,7 +36,7 @@ function Auth() {
                 <div className="card">
                     <div className="card-body login-card-body">
                         <p className="login-box-msg">Вход в систему</p>
-                        
+
                         <form onSubmit={handleSubmit}>
                             <div className="input-group mb-3">
                                 <input
@@ -72,7 +72,7 @@ function Auth() {
                                 <div className="">
                                     <button type="submit"
                                         className="btn btn-primary btn-block"
-                                        disabled={status ==='loading'}
+                                        disabled={status === 'loading'}
                                     >
                                         {status === 'loading' ? 'Загрузка' : 'Войти'}
                                     </button>

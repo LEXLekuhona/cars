@@ -186,5 +186,3 @@ export const menuItems = [
         to: '/tire_dependencies'
     },
 ]
-
-export const BASE_URL = 'http://185.239.50.252:8080'
