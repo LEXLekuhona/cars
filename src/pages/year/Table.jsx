@@ -3,19 +3,19 @@ import TableGeneric from '@shared/Table/Table'
 import PropTypes from 'prop-types'
 import { useMemo } from 'react'
 
-function Table({ generations, loading }) {
+function Table({ years, loading, onDelete, onCopy }) {
   const columns = useMemo(() => [
-    { Header: 'Год', accessor: 'year_before' },
+    { Header: 'Год', accessor: 'title' },
     {
       Header: 'Действия',
       id: 'actions',
-      Cell: () => <TableActions />
+      Cell: ({ row }) => <TableActions onCopy={() => onCopy(row.original)} onDelete={() => onDelete(row.original.id)} />
     }
-  ], [])
+  ], [onDelete, onCopy])
 
   return (
     <TableGeneric
-      data={generations}
+      data={years}
       loading={loading}
       columns={columns}
       addLink="/year/new"
@@ -27,8 +27,10 @@ function Table({ generations, loading }) {
 }
 
 Table.propTypes = {
-  generations: PropTypes.array.isRequired,
+  years: PropTypes.array.isRequired,
   loading: PropTypes.bool,
+  onDelete: PropTypes.func.isRequired,
+  onCopy: PropTypes.func.isRequired,
 }
 
 export default Table

@@ -19,4 +19,17 @@ export const updateModel = (id, data, token) =>
 export const deleteModel = (id, token) =>
   axios.delete(`${BASE_URL}/models/${id}`, {
     headers: { Authorization: `Bearer ${token}` }
-  }); 
+  });
+
+export const copyModel = (model, token) =>
+  axios.post(`${BASE_URL}/models`, {
+    title: model.title + ' (копия)',
+    brand_id: model.brand_id,
+    generation_ids: model.generation_ids || []
+  }, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }) 

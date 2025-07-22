@@ -9,7 +9,7 @@ function TableGeneric({ data, loading, columns, addLink, addLabel, lengthId, fil
 
   const {
     getTableProps, getTableBodyProps, headerGroups, prepareRow, page: tablePage,
-    state, setGlobalFilter, pageOptions, gotoPage, setPageSize, canNextPage, canPreviousPage, nextPage, previousPage
+    state, setGlobalFilter, pageOptions, gotoPage, setPageSize, canNextPage, canPreviousPage
   } = useTable(
     {
       columns: memoColumns,

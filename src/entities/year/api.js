@@ -19,4 +19,16 @@ export const updateYear = (id, data, token) =>
 export const deleteYear = (id, token) =>
   axios.delete(`${BASE_URL}/year/${id}`, {
     headers: { Authorization: `Bearer ${token}` }
-  }); 
+  });
+
+export const copyYear = (year, token) =>
+  axios.post(`${BASE_URL}/year`, {
+    title: year.title + ' (копия)',
+    generation_id: year.generation_id
+  }, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }) 

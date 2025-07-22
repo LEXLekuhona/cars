@@ -1,5 +1,3 @@
-
-
 function TableActions({ onEdit, onCopy, onDelete }) {
 	return (
 		<div className="d-flex justify-content-center" style={{ gap: '4px' }}>
