@@ -14,14 +14,38 @@ services:
     environment:
       - NODE_ENV=development
     command: yarn dev --host 0.0.0.0
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5173"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
-  # Production mode
+  # Production mode (оптимизированный)
   cars-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      target: production
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Production mode (стандартный)
+  cars-prod-standard:
     build:
       context: .
       target: production
     ports:
-      - "80:80"
+      - "8080:80"
     environment:
       - NODE_ENV=production
     restart: unless-stopped 

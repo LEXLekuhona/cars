@@ -1,5 +1,5 @@
 # Используйте базовый образ с Node.js
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 # Установите рабочую директорию
 WORKDIR /app
@@ -7,8 +7,9 @@ WORKDIR /app
 # Скопируйте package.json и yarn.lock
 COPY package.json yarn.lock ./
 
-# Установите зависимости
-RUN yarn install --frozen-lockfile
+# Установите зависимости с очисткой кеша
+RUN yarn install --frozen-lockfile --network-timeout 100000 && \
+    yarn cache clean
 
 # Скопируйте все файлы проекта
 COPY . .
@@ -32,15 +33,16 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 
 # Dev образ
-FROM node:18-alpine AS development
+FROM node:20-alpine AS development
 
 WORKDIR /app
 
 # Копируем package.json и yarn.lock
 COPY package.json yarn.lock ./
 
-# Устанавливаем зависимости
-RUN yarn install --frozen-lockfile
+# Устанавливаем зависимости с очисткой кеша
+RUN yarn install --frozen-lockfile --network-timeout 100000 && \
+    yarn cache clean
 
 # Копируем исходный код
 COPY . .
