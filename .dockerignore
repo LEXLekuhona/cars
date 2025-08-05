@@ -28,7 +28,6 @@ build
 .cache
 .yarn
 .yarnrc
-yarn.lock
 package-lock.json
 public/plugins
 public/dist
