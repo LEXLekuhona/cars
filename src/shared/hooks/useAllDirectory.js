@@ -34,9 +34,7 @@ export function useAllDirectory(baseUrl, dataKey = 'items', pageSize = 100) {
   }, [baseUrl, dataKey, pageSize, token])
 
   useEffect(() => {
-    let isMounted = true
     fetchAll()
-    return () => { isMounted = false }
   }, [fetchAll])
 
   return { data, loading, error, refetch: fetchAll }

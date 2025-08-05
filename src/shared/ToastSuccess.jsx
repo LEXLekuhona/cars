@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 function ToastSuccess({ show, text = 'Запись успешно удалена', onClose }) {
 	useEffect(() => {

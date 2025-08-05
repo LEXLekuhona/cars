@@ -14,6 +14,7 @@ function Brands() {
 	const [searchParams, setSearchParams] = useSearchParams()
 	const page = Number(searchParams.get('page')) || 1
 	const size = Number(searchParams.get('size')) || 10
+	const refresh = searchParams.get('refresh')
 	const { data: brands, loading, refetch } = useAllBrands(`${BASE_URL}${API_PATHS.brands}`, 'items', size)
 	const [allBrands, setAllBrands] = useState([])
 	const [showModal, setShowModal] = useState(false)
@@ -24,6 +25,15 @@ function Brands() {
 	useEffect(() => {
 		setAllBrands(brands)
 	}, [brands])
+
+	// Обработка параметра refresh для обновления данных
+	useEffect(() => {
+		if (refresh === 'true') {
+			refetch()
+			// Убираем параметр refresh из URL
+			setSearchParams({ page, size })
+		}
+	}, [refresh, refetch, setSearchParams, page, size])
 
 	const handlePageChange = (newPage) => {
 		setSearchParams({ page: newPage, size })
@@ -91,7 +101,7 @@ function Brands() {
 					<div className="container-fluid">
 						<div className="row mb-2">
 							<div className="col-sm-6">
-								<h1 className="m-0">Бренды</h1>
+								<h1 className="m-0">Марка</h1>
 							</div>
 						</div>
 					</div>

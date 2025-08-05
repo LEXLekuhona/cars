@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import React from 'react'
 
 function ConfirmModal({ show, onConfirm, onCancel, text, subtext }) {
 	if (!show) return null

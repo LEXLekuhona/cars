@@ -1,4 +1,5 @@
 import { menuItems } from '@utils/data'
+import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -125,4 +126,20 @@ export default function Sidebar() {
 			{menuItems.map(renderMenuItem)}
 		</ul>
 	)
+}
+
+MenuItemWithSubMenu.propTypes = {
+	subMenu: PropTypes.array.isRequired,
+	isOpen: PropTypes.bool.isRequired,
+	onToggle: PropTypes.func.isRequired,
+}
+
+MenuItem.propTypes = {
+	key: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	icon: PropTypes.string,
+	label: PropTypes.string,
+	to: PropTypes.string,
+	exact: PropTypes.bool,
+	href: PropTypes.string,
+	subMenu: PropTypes.array,
 }

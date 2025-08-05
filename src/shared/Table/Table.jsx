@@ -14,9 +14,9 @@ function TableGeneric({ data, loading, columns, addLink, addLabel, lengthId, fil
     {
       columns: memoColumns,
       data,
-      initialState: { pageIndex: (page || 1) - 1, pageSize: size || 10 },
+      initialState: { pageIndex: (page || 1) - 1, pageSize: size || 50 },
       manualPagination: !!page,
-      pageCount: Math.ceil(data.length / (size || 10)),
+      pageCount: Math.ceil(data.length / (size || 50)),
     },
     useGlobalFilter,
     useSortBy,

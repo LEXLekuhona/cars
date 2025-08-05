@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 function TableActions({ onEdit, onCopy, onDelete }) {
 	return (
 		<div className="d-flex justify-content-center" style={{ gap: '4px' }}>
@@ -12,6 +14,15 @@ function TableActions({ onEdit, onCopy, onDelete }) {
 			</button>
 		</div>
 	)
+}
+
+TableActions.propTypes = {
+	onEdit: PropTypes.func,
+	onCopy: PropTypes.func,
+	onDelete: PropTypes.func,
+	row: PropTypes.shape({
+		original: PropTypes.object,
+	}),
 }
 
 export default TableActions 

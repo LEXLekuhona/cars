@@ -284,7 +284,7 @@ function toggleShow(option, show) {
 
 function onSelectChange(obj, chooseEmpty = true) {
     const childSelect = $(`select[name="${obj.getAttribute('data-child')}"]`)[0]
-    childSelect.disabled = !Boolean(obj.value);
+    childSelect.disabled = !obj.value;
 
     let children = obj.options[obj.selectedIndex].getAttribute('data-children');
     if (children) {
@@ -293,12 +293,12 @@ function onSelectChange(obj, chooseEmpty = true) {
         children = [];
     }
     Array.from(childSelect.querySelectorAll('option')).forEach((option) => {
-        if (!Boolean(option.value) & chooseEmpty)
+        if (!option.value & chooseEmpty)
             option.selected = 'selected';
 
         toggleShow(
             option,
-            Boolean(children.includes(Number(option.value)) | !Boolean(option.value))
+            Boolean(children.includes(Number(option.value)) | !option.value)
         );
     });
 
@@ -313,7 +313,7 @@ function toggleHideClass(obj, className) {
 
 function onCheckParam(checkBox) {
     let parent = document.querySelector(`[data-child='${checkBox.className}'] [data-selected=true]`);
-    if (!!parent) {
+    if (parent) {
         let children = parent.getAttribute('data-children')
         children = ((children) ? children.split(',').map(Number) : [])
 
@@ -327,7 +327,7 @@ function onCheckParam(checkBox) {
     }
 
     let selected = document.querySelector(`input.${checkBox.className}[data-selected=true]`);
-    let selected_id = (!!selected) ? selected.id : null
+    let selected_id = (selected) ? selected.id : null
 
     if (!checkBox.disabled) {
         setColumn(
@@ -344,7 +344,7 @@ function getChecked(className) {
     for (let checkBox of document.querySelectorAll(`input.${className}:checked`)) {
         arr.push(checkBox.id)
     }
-    return ((!!arr) ? arr.join() : null);
+    return ((arr) ? arr.join() : null);
 }
 
 function onSelectParam(label) {

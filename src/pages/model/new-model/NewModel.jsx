@@ -1,10 +1,7 @@
-import Cookies from 'js-cookie'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 
 function NewModel() {
 	document.title = 'CarsDB - Создать модель'
-	const token = useSelector((state) => state.auth.token) || Cookies.get('token')
 	const [name, setName] = useState('')
 	const [description, setDescription] = useState('')
 

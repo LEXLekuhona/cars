@@ -6,7 +6,6 @@ import NotFound from '@pages/notFound/NotFound'
 import Year from '@pages/year/Year'
 import { STORAGE_KEYS } from '@shared/config'
 import Auth from '@widgets/Auth/Auth'
-import Footer from '@widgets/Footer/Footer'
 import Navbar from '@widgets/Navbar/Navbar'
 import Preloader from '@widgets/Preloader/Preloader'
 import Sidebar from '@widgets/Sidebar/Sidebar'
@@ -34,7 +33,6 @@ function App() {
               <Route path='year/*' element={<Year />} />
               <Route path='*' element={<NotFound />} />
             </Routes>
-            <Footer />
           </div>
         ) : (
           <Routes>

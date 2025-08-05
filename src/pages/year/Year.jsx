@@ -1,16 +1,14 @@
 import { copyYear, deleteYear } from '@entities/year/api'
 import Table from '@pages/year/Table'
-import { API_PATHS, BASE_URL, STORAGE_KEYS } from '@shared/config'
+import { API_PATHS, BASE_URL } from '@shared/config'
 import ConfirmModal from '@shared/ConfirmModal'
 import { useAllDirectory } from '@shared/hooks/useAllDirectory'
 import ToastSuccess from '@shared/ToastSuccess'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 
 function Year() {
-	const token = useSelector((state) => state.auth.token) || Cookies.get(STORAGE_KEYS.token)
 	const [searchParams, setSearchParams] = useSearchParams()
 	const page = Number(searchParams.get('page')) || 1
 	const size = Number(searchParams.get('size')) || 10
@@ -42,6 +40,7 @@ function Year() {
 			const token = Cookies.get('token')
 			await deleteYear(deleteId, token)
 			setAllYears(allYears.filter(y => y.id !== deleteId))
+			setToastText('Год успешно удалён')
 			setShowToast(true)
 		} catch {
 			alert('Ошибка при удалении')
@@ -66,7 +65,7 @@ function Year() {
 			await copyYear({ ...year, title: newTitle }, token)
 			setToastText('Запись успешно скопирована')
 			setShowToast(true)
-			refetch() // обновляем данные
+			refetch()
 		} catch (error) {
 			if (error.response && error.response.status === 409 && error.response.data && error.response.data.message) {
 				setToastText(error.response.data.message)
@@ -78,7 +77,7 @@ function Year() {
 	}
 
 	const yearToDelete = allYears.find(y => y.id === deleteId)
-	const subtext = yearToDelete ? `Год "${yearToDelete.year_before}" будет удалён навсегда. Это действие нельзя будет вернуть.` : ''
+	const subtext = yearToDelete ? `Год "${yearToDelete.title}" будет удалён навсегда. Это действие нельзя будет вернуть.` : ''
 
 	return (
 		<>
@@ -87,14 +86,14 @@ function Year() {
 					<div className="container-fluid">
 						<div className="row mb-2">
 							<div className="col-sm-6">
-								<h1 className="m-0">Год</h1>
+								<h1 className="m-0">Годы</h1>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div style={{ position: 'relative' }}>
 					<Table
-						generations={allYears}
+						years={allYears}
 						loading={loading}
 						page={page}
 						size={size}
@@ -103,6 +102,14 @@ function Year() {
 						onDelete={handleDeleteClick}
 						onCopy={handleCopy}
 					/>
+					{loading && (
+						<div style={{
+							position: 'absolute', left: 0, right: 0, top: 0, bottom: 0,
+							background: 'rgba(255,255,255,0.5)', display: 'flex',
+							alignItems: 'center', justifyContent: 'center', zIndex: 10
+						}}>
+						</div>
+					)}
 					<ConfirmModal
 						show={showModal}
 						onConfirm={handleConfirmDelete}

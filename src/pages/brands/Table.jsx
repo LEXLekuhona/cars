@@ -33,5 +33,16 @@ Table.propTypes = {
   onCopy: PropTypes.func.isRequired,
 }
 
+// Для кастомной ячейки действий
+TableActions.propTypes = {
+  onCopy: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  row: PropTypes.shape({
+    original: PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    }),
+  }),
+}
+
 export default Table
 

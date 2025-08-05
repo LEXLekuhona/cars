@@ -13,25 +13,25 @@ export const menuItems = [
 		key: 'brands', 
 		to: '/brands', 
 		icon: 'fas fa-cog', 
-		label: 'Бренды' 
+		label: 'Марка' 
 	},
 	{ 
 		key: 'models', 
 		to: '/models', 
 		icon: 'fas fa-wrench', 
-		label: 'Модели' 
+		label: 'Модель' 
 	},
 	{ 
 		key: 'generations', 
 		to: '/generations', 
 		icon: 'fas fa-star', 
-		label: 'Поколения' 
+		label: 'Поколение' 
 	},
 	{ 
 		key: 'year', 
 		to: '/year', 
 		icon: 'far fa-image', 
-		label: 'Годы' 
+		label: 'Год' 
 	},
 	{ 
 		key: 'tireDiameter', 
@@ -185,4 +185,5 @@ export const menuItems = [
 		icon: 'far fa-image',
         to: '/tire_dependencies'
     },
+
 ]
