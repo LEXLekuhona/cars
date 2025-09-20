@@ -9,10 +9,12 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 function Year() {
+	document.title = 'CarsDB - Годы'
 	const [searchParams, setSearchParams] = useSearchParams()
 	const page = Number(searchParams.get('page')) || 1
 	const size = Number(searchParams.get('size')) || 10
-	const { data: years, loading, refetch } = useAllDirectory(`${BASE_URL}${API_PATHS.years}`, 'items', size)
+	const refresh = searchParams.get('refresh')
+	const { data: years, loading, refetch } = useAllDirectory(`${BASE_URL}${API_PATHS.generations}`, 'items', size)
 	const [allYears, setAllYears] = useState([])
 	const [showModal, setShowModal] = useState(false)
 	const [deleteId, setDeleteId] = useState(null)
@@ -22,6 +24,15 @@ function Year() {
 	useEffect(() => {
 		setAllYears(years)
 	}, [years])
+
+	// Обработка параметра refresh для обновления данных
+	useEffect(() => {
+		if (refresh === 'true') {
+			refetch()
+			// Убираем параметр refresh из URL
+			setSearchParams({ page, size })
+		}
+	}, [refresh, refetch, setSearchParams, page, size])
 
 	const handlePageChange = (newPage) => {
 		setSearchParams({ page: newPage, size })

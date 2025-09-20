@@ -5,7 +5,7 @@ import { useMemo } from 'react'
 
 function Table({ years, loading, onDelete, onCopy }) {
   const columns = useMemo(() => [
-    { Header: 'Год', accessor: 'title' },
+    { Header: 'Год', accessor: 'year_before' },
     {
       Header: 'Действия',
       id: 'actions',

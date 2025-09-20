@@ -18,7 +18,7 @@ function Table({ models, loading, onDelete, onCopy }) {
       data={models}
       loading={loading}
       columns={columns}
-      addLink="/model/new"
+      addLink="new"
       addLabel="Добавить"
       lengthId="models_length"
       filterId="models_filter"

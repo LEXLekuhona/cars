@@ -9,9 +9,11 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 function Generation() {
+	document.title = 'CarsDB - Поколение'
 	const [searchParams, setSearchParams] = useSearchParams()
 	const page = Number(searchParams.get('page')) || 1
 	const size = Number(searchParams.get('size')) || 10
+	const refresh = searchParams.get('refresh')
 	const { data: generations, loading, refetch } = useAllDirectory(`${BASE_URL}${API_PATHS.generations}`, 'items', size)
 	const [allGenerations, setAllGenerations] = useState([])
 	const [showModal, setShowModal] = useState(false)
@@ -22,6 +24,15 @@ function Generation() {
 	useEffect(() => {
 		setAllGenerations(generations)
 	}, [generations])
+
+	// Обработка параметра refresh для обновления данных
+	useEffect(() => {
+		if (refresh === 'true') {
+			refetch()
+			// Убираем параметр refresh из URL
+			setSearchParams({ page, size })
+		}
+	}, [refresh, refetch, setSearchParams, page, size])
 
 	const handlePageChange = (newPage) => {
 		setSearchParams({ page: newPage, size })
@@ -40,6 +51,7 @@ function Generation() {
 			const token = Cookies.get('token')
 			await deleteGeneration(deleteId, token)
 			setAllGenerations(allGenerations.filter(g => g.id !== deleteId))
+			setToastText('Поколение успешно удалено')
 			setShowToast(true)
 		} catch {
 			alert('Ошибка при удалении')

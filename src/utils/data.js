@@ -22,8 +22,8 @@ export const menuItems = [
 		label: 'Модель' 
 	},
 	{ 
-		key: 'generations', 
-		to: '/generations', 
+		key: 'generation', 
+		to: '/generation', 
 		icon: 'fas fa-star', 
 		label: 'Поколение' 
 	},

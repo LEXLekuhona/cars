@@ -1,5 +1,4 @@
 import { copyModel, deleteModel } from '@entities/model/api'
-import NewModel from '@pages/model/new-model/NewModel'
 import Table from '@pages/model/Table'
 import { API_PATHS, BASE_URL } from '@shared/config'
 import ConfirmModal from '@shared/ConfirmModal'
@@ -7,9 +6,10 @@ import { useAllDirectory } from '@shared/hooks/useAllDirectory'
 import ToastSuccess from '@shared/ToastSuccess'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
-import { Route, Routes, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
 function Model() {
+	document.title = 'CarsDB - Модель'
 	const [searchParams, setSearchParams] = useSearchParams()
 	const page = Number(searchParams.get('page')) || 1
 	const size = Number(searchParams.get('size')) || 10
@@ -81,9 +81,6 @@ function Model() {
 
 	return (
 		<>
-			<Routes>
-				<Route path='new' element={<NewModel />} />
-			</Routes>
 			<div className="content-wrapper">
 				<div className="content-header" >
 					<div className="container-fluid">

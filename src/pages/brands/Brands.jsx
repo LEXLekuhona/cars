@@ -1,5 +1,4 @@
 import { copyBrand, deleteBrand } from '@entities/brand/api'
-import NewBrands from '@pages/brands/new-brands/Newbrands'
 import Table from '@pages/brands/Table'
 import { API_PATHS, BASE_URL } from '@shared/config'
 import ConfirmModal from '@shared/ConfirmModal'
@@ -7,10 +6,10 @@ import { useAllBrands } from '@shared/hooks/useAllBrands'
 import ToastSuccess from '@shared/ToastSuccess'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
-import { Route, Routes, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
 function Brands() {
-	document.title = 'CarsDB - Бренды'
+	document.title = 'CarsDB - Марка'
 	const [searchParams, setSearchParams] = useSearchParams()
 	const page = Number(searchParams.get('page')) || 1
 	const size = Number(searchParams.get('size')) || 10
@@ -93,9 +92,6 @@ function Brands() {
 
 	return (
 		<>
-			<Routes>
-				<Route path='new' element={<NewBrands />} />
-			</Routes>
 			<div className="content-wrapper">
 				<div className="content-header" >
 					<div className="container-fluid">
