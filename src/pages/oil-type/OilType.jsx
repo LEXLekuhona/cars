@@ -1,5 +1,5 @@
-import { copyYear, deleteYear } from '@entities/year/api'
-import Table from '@pages/year/Table'
+import { copyOilType, deleteOilType } from '@entities/oil-type/api'
+import Table from '@pages/oil-type/Table'
 import { API_PATHS, BASE_URL } from '@shared/config'
 import ConfirmModal from '@shared/ConfirmModal'
 import { useAllDirectory } from '@shared/hooks/useAllDirectory'
@@ -8,38 +8,29 @@ import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-function Year() {
-	document.title = 'CarsDB - Год'
+function OilType() {
+	document.title = 'CarsDB - Типы масел'
 	const [searchParams, setSearchParams] = useSearchParams()
 	const page = Number(searchParams.get('page')) || 1
 	const size = Number(searchParams.get('size')) || 10
 	const refresh = searchParams.get('refresh')
-	const { data: years, loading, refetch } = useAllDirectory(`${BASE_URL}${API_PATHS.generations}`, 'items', size)
-	const [allYears, setAllYears] = useState([])
+	const { data: oilTypes, loading, refetch } = useAllDirectory(`${BASE_URL}${API_PATHS.oilType}`, 'items', size)
+	const [allOilTypes, setAllOilTypes] = useState([])
 	const [showModal, setShowModal] = useState(false)
 	const [deleteId, setDeleteId] = useState(null)
 	const [showToast, setShowToast] = useState(false)
 	const [toastText, setToastText] = useState('')
 
 	useEffect(() => {
-		setAllYears(years)
-	}, [years])
+		setAllOilTypes(oilTypes)
+	}, [oilTypes])
 
-	// Обработка параметра refresh для обновления данных
 	useEffect(() => {
 		if (refresh === 'true') {
 			refetch()
-			// Убираем параметр refresh из URL
 			setSearchParams({ page, size })
 		}
 	}, [refresh, refetch, setSearchParams, page, size])
-
-	const handlePageChange = (newPage) => {
-		setSearchParams({ page: newPage, size })
-	}
-	const handleSizeChange = (newSize) => {
-		setSearchParams({ page: 1, size: newSize })
-	}
 
 	const handleDeleteClick = (id) => {
 		setDeleteId(id)
@@ -49,9 +40,9 @@ function Year() {
 	const handleConfirmDelete = async () => {
 		try {
 			const token = Cookies.get('token')
-			await deleteYear(deleteId, token)
-			setAllYears(allYears.filter(y => y.id !== deleteId))
-			setToastText('Год успешно удалён')
+			await deleteOilType(deleteId, token)
+			setAllOilTypes(allOilTypes.filter(ot => ot.id !== deleteId))
+			setToastText('Тип успешно удалён')
 			setShowToast(true)
 		} catch {
 			alert('Ошибка при удалении')
@@ -62,18 +53,18 @@ function Year() {
 
 	const getBaseTitle = (title) => title.replace(/ \(копия( \d+)?\)$/i, '')
 
-	const handleCopy = async (year) => {
+	const handleCopy = async (oilType) => {
 		try {
 			const token = Cookies.get('token')
-			const baseTitle = getBaseTitle(year.title)
-			const titles = allYears.map(y => y.title)
+			const baseTitle = getBaseTitle(oilType.title)
+			const titles = allOilTypes.map(ot => ot.title)
 			let newTitle = baseTitle + ' (копия)'
 			let copyIndex = 2
 			while (titles.includes(newTitle)) {
 				newTitle = `${baseTitle} (копия ${copyIndex})`
 				copyIndex++
 			}
-			await copyYear({ ...year, title: newTitle }, token)
+			await copyOilType({ ...oilType, title: newTitle }, token)
 			setToastText('Запись успешно скопирована')
 			setShowToast(true)
 			refetch()
@@ -87,8 +78,8 @@ function Year() {
 		}
 	}
 
-	const yearToDelete = allYears.find(y => y.id === deleteId)
-	const subtext = yearToDelete ? `Год "${yearToDelete.title}" будет удалён навсегда. Это действие нельзя будет вернуть.` : ''
+	const oilTypeToDelete = allOilTypes.find(ot => ot.id === deleteId)
+	const subtext = oilTypeToDelete ? `Тип "${oilTypeToDelete.title}" будет удалён навсегда. Это действие нельзя будет вернуть.` : ''
 
 	return (
 		<>
@@ -97,19 +88,15 @@ function Year() {
 					<div className="container-fluid">
 						<div className="row mb-2">
 							<div className="col-sm-6">
-								<h1 className="m-0">Год</h1>
+								<h1 className="m-0">Типы</h1>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div style={{ position: 'relative' }}>
 					<Table
-						years={allYears}
+						oilTypes={allOilTypes}
 						loading={loading}
-						page={page}
-						size={size}
-						onPageChange={handlePageChange}
-						onSizeChange={handleSizeChange}
 						onDelete={handleDeleteClick}
 						onCopy={handleCopy}
 					/>
@@ -135,4 +122,4 @@ function Year() {
 	)
 }
 
-export default Year
+export default OilType

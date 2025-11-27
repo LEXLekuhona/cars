@@ -1,5 +1,5 @@
-import { copyYear, deleteYear } from '@entities/year/api'
-import Table from '@pages/year/Table'
+import { copyWheel, deleteWheel } from '@entities/wheels/api'
+import Table from '@pages/wheels/Table'
 import { API_PATHS, BASE_URL } from '@shared/config'
 import ConfirmModal from '@shared/ConfirmModal'
 import { useAllDirectory } from '@shared/hooks/useAllDirectory'
@@ -8,28 +8,26 @@ import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-function Year() {
-	document.title = 'CarsDB - Год'
+function Wheels() {
+	document.title = 'CarsDB - Диски'
 	const [searchParams, setSearchParams] = useSearchParams()
 	const page = Number(searchParams.get('page')) || 1
 	const size = Number(searchParams.get('size')) || 10
 	const refresh = searchParams.get('refresh')
-	const { data: years, loading, refetch } = useAllDirectory(`${BASE_URL}${API_PATHS.generations}`, 'items', size)
-	const [allYears, setAllYears] = useState([])
+	const { data: wheels, loading, refetch } = useAllDirectory(`${BASE_URL}${API_PATHS.wheels}`, 'items', size)
+	const [allWheels, setAllWheels] = useState([])
 	const [showModal, setShowModal] = useState(false)
 	const [deleteId, setDeleteId] = useState(null)
 	const [showToast, setShowToast] = useState(false)
 	const [toastText, setToastText] = useState('')
 
 	useEffect(() => {
-		setAllYears(years)
-	}, [years])
+		setAllWheels(wheels)
+	}, [wheels])
 
-	// Обработка параметра refresh для обновления данных
 	useEffect(() => {
 		if (refresh === 'true') {
 			refetch()
-			// Убираем параметр refresh из URL
 			setSearchParams({ page, size })
 		}
 	}, [refresh, refetch, setSearchParams, page, size])
@@ -49,9 +47,9 @@ function Year() {
 	const handleConfirmDelete = async () => {
 		try {
 			const token = Cookies.get('token')
-			await deleteYear(deleteId, token)
-			setAllYears(allYears.filter(y => y.id !== deleteId))
-			setToastText('Год успешно удалён')
+			await deleteWheel(deleteId, token)
+			setAllWheels(allWheels.filter(w => w.id !== deleteId))
+			setToastText('Диски успешно удалены')
 			setShowToast(true)
 		} catch {
 			alert('Ошибка при удалении')
@@ -62,18 +60,18 @@ function Year() {
 
 	const getBaseTitle = (title) => title.replace(/ \(копия( \d+)?\)$/i, '')
 
-	const handleCopy = async (year) => {
+	const handleCopy = async (wheel) => {
 		try {
 			const token = Cookies.get('token')
-			const baseTitle = getBaseTitle(year.title)
-			const titles = allYears.map(y => y.title)
+			const baseTitle = getBaseTitle(wheel.title)
+			const titles = allWheels.map(w => w.title)
 			let newTitle = baseTitle + ' (копия)'
 			let copyIndex = 2
 			while (titles.includes(newTitle)) {
 				newTitle = `${baseTitle} (копия ${copyIndex})`
 				copyIndex++
 			}
-			await copyYear({ ...year, title: newTitle }, token)
+			await copyWheel({ ...wheel, title: newTitle }, token)
 			setToastText('Запись успешно скопирована')
 			setShowToast(true)
 			refetch()
@@ -87,8 +85,8 @@ function Year() {
 		}
 	}
 
-	const yearToDelete = allYears.find(y => y.id === deleteId)
-	const subtext = yearToDelete ? `Год "${yearToDelete.title}" будет удалён навсегда. Это действие нельзя будет вернуть.` : ''
+	const wheelToDelete = allWheels.find(w => w.id === deleteId)
+	const subtext = wheelToDelete ? `Диски "${wheelToDelete.title}" будут удалены навсегда. Это действие нельзя будет вернуть.` : ''
 
 	return (
 		<>
@@ -97,19 +95,15 @@ function Year() {
 					<div className="container-fluid">
 						<div className="row mb-2">
 							<div className="col-sm-6">
-								<h1 className="m-0">Год</h1>
+								<h1 className="m-0">Диски</h1>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div style={{ position: 'relative' }}>
 					<Table
-						years={allYears}
+						wheels={allWheels}
 						loading={loading}
-						page={page}
-						size={size}
-						onPageChange={handlePageChange}
-						onSizeChange={handleSizeChange}
 						onDelete={handleDeleteClick}
 						onCopy={handleCopy}
 					/>
@@ -135,4 +129,4 @@ function Year() {
 	)
 }
 
-export default Year
+export default Wheels

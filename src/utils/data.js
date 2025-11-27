@@ -35,24 +35,24 @@ export const menuItems = [
 	},
 	{ 
 		key: 'tireDiameter', 
-		to: '/tire_diameter', 
+		to: '/tire-diameter', 
 		icon: 'far fa-image', 
 		label: 'Диаметр шин' 
 	},
 	{
 		key: 'tireMetric',
-		label: 'Шины (метрическая)',
+		label: 'Шины',
 		icon: 'fas fa-edit',
 		subMenu: [
 			{ 
 				key: 'profile', 
-				to: '/tire_metric_profile', 
+				to: '/tire-metric-profile', 
 				icon: 'far fa-circle', 
 				label: 'Профиль' 
 			},
 			{ 
 				key: 'width', 
-				to: '/tire_metric_width', 
+				to: '/tire-metric-width', 
 				icon: 'far fa-circle', 
 				label: 'Ширина' 
 			},
@@ -65,13 +65,13 @@ export const menuItems = [
 		subMenu: [
 			{ 
 				key: 'height', 
-				to: '/tire_inch_height', 
+				to: '/tire-inch-height', 
 				icon: 'far fa-circle', 
 				label: 'Высота' 
 			},
 			{ 
 				key: 'widthInch', 
-				to: '/tire_inch_width', 
+				to: '/tire-inch-width', 
 				icon: 'far fa-circle', 
 				label: 'Ширина' 
 			},
@@ -84,37 +84,37 @@ export const menuItems = [
 		subMenu: [
 			{ 
 				key: 'widthWheel', 
-				to: '/wheel_width', 
+				to: '/wheel-width', 
 				icon: 'far fa-circle', 
 				label: 'Ширина' 
 			},
 			{ 
 				key: 'diameterWheel', 
-				to: '/wheel_diameter', 
+				to: '/wheel-diameter', 
 				icon: 'far fa-circle', 
 				label: 'Диаметр' 
 			},
 			{ 
 				key: 'drilling', 
-				to: '/wheel_drilling', 
+				to: '/wheel-drilling', 
 				icon: 'far fa-circle', 
 				label: 'Сверловка' 
 			},
 			{ 
 				key: 'departure', 
-				to: '/wheel_departure', 
+				to: '/wheel-departure', 
 				icon: 'far fa-circle', 
 				label: 'Вылет' 
 			},
             { 
 				key: 'diameter', 
-				to: '/wheel_ch_diameter', 
+				to: '/wheel-ch-diameter', 
 				icon: 'far fa-circle', 
 				label: 'Диаметр ЦО' 
 			},
             { 
 				key: 'dependencies', 
-				to: '/wheel_dependencies', 
+				to: '/wheel-dependencies', 
 				icon: 'far fa-circle', 
 				label: 'Связь' 
 			},
@@ -127,13 +127,13 @@ export const menuItems = [
 		subMenu:[
             {
                 key: 'type', 
-				to: '/oil_type', 
+				to: '/oil-type', 
 				icon: 'far fa-circle', 
 				label: 'Типы'
             },
             {
                 key: 'viscosity', 
-				to: '/oil_viscosity', 
+				to: '/oil-viscosity', 
 				icon: 'far fa-circle', 
 				label: 'Вязкость'
             },
@@ -143,7 +143,7 @@ export const menuItems = [
 		key: 'wipers',
 		label: 'Дворники',
 		icon: 'far fa-image',
-        to: '/wipers_length'
+        to: '/wipers'
     },
     {
 		key: 'batterys',
@@ -152,25 +152,25 @@ export const menuItems = [
 		subMenu:[
             {
                 key: 'capacity', 
-				to: '/battery_capacity', 
+				to: '/battery-capacity', 
 				icon: 'far fa-circle', 
 				label: 'Емкость'
             },
             {
                 key: 'starting_cur', 
-				to: '/battery_starting_cur', 
+				to: '/battery-starting-cur', 
 				icon: 'far fa-circle', 
 				label: 'Пусковой ток'
             },
             {
                 key: 'dimensions', 
-				to: '/battery_dimensions', 
+				to: '/battery-dimensions', 
 				icon: 'far fa-circle', 
 				label: 'Габариты'
             },
             {
                 key: 'viscosity', 
-				to: '/battery_polarity', 
+				to: '/battery-polarity', 
 				icon: 'far fa-circle', 
 				label: 'Полярность'
             },

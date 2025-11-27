@@ -1,5 +1,5 @@
-import { copyYear, deleteYear } from '@entities/year/api'
-import Table from '@pages/year/Table'
+import { copyTireMetricWidth, deleteTireMetricWidth } from '@entities/tire-metric-width/api'
+import Table from '@pages/tire-metric-width/Table'
 import { API_PATHS, BASE_URL } from '@shared/config'
 import ConfirmModal from '@shared/ConfirmModal'
 import { useAllDirectory } from '@shared/hooks/useAllDirectory'
@@ -8,28 +8,26 @@ import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-function Year() {
-	document.title = 'CarsDB - Год'
+function TireMetricWidth() {
+	document.title = 'CarsDB - Ширина (метрические шины)'
 	const [searchParams, setSearchParams] = useSearchParams()
 	const page = Number(searchParams.get('page')) || 1
 	const size = Number(searchParams.get('size')) || 10
 	const refresh = searchParams.get('refresh')
-	const { data: years, loading, refetch } = useAllDirectory(`${BASE_URL}${API_PATHS.generations}`, 'items', size)
-	const [allYears, setAllYears] = useState([])
+	const { data: tireMetricWidths, loading, refetch } = useAllDirectory(`${BASE_URL}${API_PATHS.tireMetricWidth}`, 'items', size)
+	const [allTireMetricWidths, setAllTireMetricWidths] = useState([])
 	const [showModal, setShowModal] = useState(false)
 	const [deleteId, setDeleteId] = useState(null)
 	const [showToast, setShowToast] = useState(false)
 	const [toastText, setToastText] = useState('')
 
 	useEffect(() => {
-		setAllYears(years)
-	}, [years])
+		setAllTireMetricWidths(tireMetricWidths)
+	}, [tireMetricWidths])
 
-	// Обработка параметра refresh для обновления данных
 	useEffect(() => {
 		if (refresh === 'true') {
 			refetch()
-			// Убираем параметр refresh из URL
 			setSearchParams({ page, size })
 		}
 	}, [refresh, refetch, setSearchParams, page, size])
@@ -49,9 +47,9 @@ function Year() {
 	const handleConfirmDelete = async () => {
 		try {
 			const token = Cookies.get('token')
-			await deleteYear(deleteId, token)
-			setAllYears(allYears.filter(y => y.id !== deleteId))
-			setToastText('Год успешно удалён')
+			await deleteTireMetricWidth(deleteId, token)
+			setAllTireMetricWidths(allTireMetricWidths.filter(tmw => tmw.id !== deleteId))
+			setToastText('Ширина успешно удалена')
 			setShowToast(true)
 		} catch {
 			alert('Ошибка при удалении')
@@ -62,18 +60,18 @@ function Year() {
 
 	const getBaseTitle = (title) => title.replace(/ \(копия( \d+)?\)$/i, '')
 
-	const handleCopy = async (year) => {
+	const handleCopy = async (tireMetricWidth) => {
 		try {
 			const token = Cookies.get('token')
-			const baseTitle = getBaseTitle(year.title)
-			const titles = allYears.map(y => y.title)
+			const baseTitle = getBaseTitle(tireMetricWidth.title)
+			const titles = allTireMetricWidths.map(tmw => tmw.title)
 			let newTitle = baseTitle + ' (копия)'
 			let copyIndex = 2
 			while (titles.includes(newTitle)) {
 				newTitle = `${baseTitle} (копия ${copyIndex})`
 				copyIndex++
 			}
-			await copyYear({ ...year, title: newTitle }, token)
+			await copyTireMetricWidth({ ...tireMetricWidth, title: newTitle }, token)
 			setToastText('Запись успешно скопирована')
 			setShowToast(true)
 			refetch()
@@ -87,8 +85,8 @@ function Year() {
 		}
 	}
 
-	const yearToDelete = allYears.find(y => y.id === deleteId)
-	const subtext = yearToDelete ? `Год "${yearToDelete.title}" будет удалён навсегда. Это действие нельзя будет вернуть.` : ''
+	const tireMetricWidthToDelete = allTireMetricWidths.find(tmw => tmw.id === deleteId)
+	const subtext = tireMetricWidthToDelete ? `Ширина "${tireMetricWidthToDelete.title}" будет удалена навсегда. Это действие нельзя будет вернуть.` : ''
 
 	return (
 		<>
@@ -97,19 +95,15 @@ function Year() {
 					<div className="container-fluid">
 						<div className="row mb-2">
 							<div className="col-sm-6">
-								<h1 className="m-0">Год</h1>
+								<h1 className="m-0">Ширина</h1>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div style={{ position: 'relative' }}>
 					<Table
-						years={allYears}
+						tireMetricWidths={allTireMetricWidths}
 						loading={loading}
-						page={page}
-						size={size}
-						onPageChange={handlePageChange}
-						onSizeChange={handleSizeChange}
 						onDelete={handleDeleteClick}
 						onCopy={handleCopy}
 					/>
@@ -135,4 +129,4 @@ function Year() {
 	)
 }
 
-export default Year
+export default TireMetricWidth
