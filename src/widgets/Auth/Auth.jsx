@@ -21,7 +21,7 @@ function Auth() {
         dispatch(login({ username, password }))
             .then((action) => {
                 if (action.type === 'auth/login/fulfilled') {
-                    navigate('/brands')
+                    navigate('/brands', { replace: true })
                 }
             })
     }

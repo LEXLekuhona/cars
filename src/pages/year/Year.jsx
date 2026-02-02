@@ -4,26 +4,54 @@ import { API_PATHS, BASE_URL } from '@shared/config'
 import ConfirmModal from '@shared/ConfirmModal'
 import { useAllDirectory } from '@shared/hooks/useAllDirectory'
 import ToastSuccess from '@shared/ToastSuccess'
+import NavigationPreloader from '@widgets/Preloader/NavigationPreloader'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 function Year() {
-	document.title = 'CarsDB - Год'
 	const [searchParams, setSearchParams] = useSearchParams()
 	const page = Number(searchParams.get('page')) || 1
 	const size = Number(searchParams.get('size')) || 10
 	const refresh = searchParams.get('refresh')
 	const { data: years, loading, refetch } = useAllDirectory(`${BASE_URL}${API_PATHS.generations}`, 'items', size)
+
+	useEffect(() => {
+		document.title = 'CarsDB - Год'
+	}, [])
 	const [allYears, setAllYears] = useState([])
+	const [isInitialLoad, setIsInitialLoad] = useState(true)
+	const [showTable, setShowTable] = useState(false)
+	const [tableRendered, setTableRendered] = useState(false)
 	const [showModal, setShowModal] = useState(false)
 	const [deleteId, setDeleteId] = useState(null)
 	const [showToast, setShowToast] = useState(false)
 	const [toastText, setToastText] = useState('')
 
 	useEffect(() => {
-		setAllYears(years)
-	}, [years])
+		if (years) {
+			setAllYears(years)
+			if (isInitialLoad && !loading) {
+				setIsInitialLoad(false)
+				// Показываем таблицу сразу после загрузки данных
+				setShowTable(true)
+			} else if (!isInitialLoad) {
+				setShowTable(true)
+			}
+		}
+	}, [years, isInitialLoad, loading])
+
+	// Отслеживаем, когда таблица отрендерилась
+	useEffect(() => {
+		if (showTable && !tableRendered) {
+			// Даем браузеру время отрисовать таблицу
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => {
+					setTableRendered(true)
+				})
+			})
+		}
+	}, [showTable, tableRendered])
 
 	// Обработка параметра refresh для обновления данных
 	useEffect(() => {
@@ -92,6 +120,7 @@ function Year() {
 
 	return (
 		<>
+			<NavigationPreloader show={loading && isInitialLoad || (showTable && !tableRendered)} />
 			<div className="content-wrapper">
 				<div className="content-header" >
 					<div className="container-fluid">
@@ -103,24 +132,18 @@ function Year() {
 					</div>
 				</div>
 				<div style={{ position: 'relative' }}>
-					<Table
-						years={allYears}
-						loading={loading}
-						page={page}
-						size={size}
-						onPageChange={handlePageChange}
-						onSizeChange={handleSizeChange}
-						onDelete={handleDeleteClick}
-						onCopy={handleCopy}
-					/>
-					{loading && (
-						<div style={{
-							position: 'absolute', left: 0, right: 0, top: 0, bottom: 0,
-							background: 'rgba(255,255,255,0.5)', display: 'flex',
-							alignItems: 'center', justifyContent: 'center', zIndex: 10
-						}}>
-						</div>
-					)}
+					{showTable && !loading ? (
+						<Table
+							years={allYears}
+							loading={loading}
+							page={page}
+							size={size}
+							onPageChange={handlePageChange}
+							onSizeChange={handleSizeChange}
+							onDelete={handleDeleteClick}
+							onCopy={handleCopy}
+						/>
+					) : null}
 					<ConfirmModal
 						show={showModal}
 						onConfirm={handleConfirmDelete}

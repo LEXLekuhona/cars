@@ -1,7 +1,14 @@
 import { Link, useLocation } from "react-router-dom"
+import { SIMPLE_DIRECTORIES } from '@shared/entities/simpleDirectories'
 
 // Маппинг путей к названиям страниц
 const getPageTitle = (pathname) => {
+	const simplePaths = SIMPLE_DIRECTORIES.reduce((acc, entry) => {
+		acc[`/${entry.path}`] = entry.label
+		acc[`/${entry.path}/new`] = `Добавить ${entry.label.toLowerCase()}`
+		return acc
+	}, {})
+
 	const pathMap = {
 		'/': 'Главная страница',
 		'/brands': 'Марка',
@@ -60,6 +67,7 @@ const getPageTitle = (pathname) => {
 		'/battery-dimensions/new': 'Добавить габариты',
 		'/battery-polarity': 'Полярность',
 		'/battery-polarity/new': 'Добавить полярность',
+		...simplePaths
 	}
 
 	// Убираем query параметры из пути
