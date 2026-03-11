@@ -1,4 +1,5 @@
-import { menuItems } from '@utils/data'
+import { baseMenuItems } from '@utils/data'
+import { useDynamicMenu } from '@shared/hooks/useDynamicMenu'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
@@ -88,6 +89,7 @@ function MenuItem({ item }) {
 
 export default function Sidebar() {
 	const [openKeys, setOpenKeys] = useState({})
+	const { menuItems: dynamicMenuItems, loading: menuLoading } = useDynamicMenu()
 
 	const toggleSubMenu = (key) => {
 		setOpenKeys((prev) => ({
@@ -116,6 +118,14 @@ export default function Sidebar() {
 		return <MenuItem key={item.key} item={item} />
 	}
 
+	// Объединяем базовые пункты меню с динамическими
+	const allMenuItems = [
+		...baseMenuItems,
+		// Добавляем заголовок перед динамическими пунктами, если они есть
+		// ...(dynamicMenuItems.length > 0 ? [{ header: 'Параметры' }] : []),
+		...dynamicMenuItems
+	]
+
 	return (
 		<ul
 			className="nav nav-pills nav-sidebar flex-column"
@@ -123,7 +133,7 @@ export default function Sidebar() {
 			role="menu"
 			data-accordion="false"
 		>
-			{menuItems.map(renderMenuItem)}
+			{allMenuItems.map(renderMenuItem)}
 		</ul>
 	)
 }

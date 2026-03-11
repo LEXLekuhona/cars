@@ -10,6 +10,12 @@ import NotFound from '@pages/notFound/NotFound'
 import SimpleDirectoryForm from '@pages/simple-directory/SimpleDirectoryForm'
 import SimpleDirectoryPage from '@pages/simple-directory/SimpleDirectoryPage'
 import Year from '@pages/year/Year'
+import PropertyTypesPage from '@pages/properties/PropertyTypesPage'
+import PropertyTypesForm from '@pages/properties/PropertyTypesForm'
+import PropertiesPage from '@pages/properties/PropertiesPage'
+import PropertiesForm from '@pages/properties/PropertiesForm'
+import PropertyValuesPage from '@pages/properties/PropertyValuesPage'
+import PropertyValuesForm from '@pages/properties/PropertyValuesForm'
 import { STORAGE_KEYS } from '@shared/config'
 import { SIMPLE_DIRECTORIES } from '@shared/entities/simpleDirectories'
 import Auth from '@widgets/Auth/Auth'
@@ -39,7 +45,26 @@ const SIMPLE_ROUTES = SIMPLE_DIRECTORIES.flatMap((entry) => ([
   { path: `${entry.path}/new`, element: <SimpleDirectoryForm config={entry} /> }
 ]))
 
-const PROTECTED_ROUTES = [...BASE_ROUTES, ...SIMPLE_ROUTES]
+// Properties routes
+const PROPERTIES_ROUTES = [
+  // Property Types
+  { path: 'property-types', element: <PropertyTypesPage /> },
+  { path: 'property-types/new', element: <PropertyTypesForm /> },
+  // Properties (with property type context)
+  { path: 'property-types/:propertyTypeId/properties', element: <PropertiesPage /> },
+  { path: 'property-types/:propertyTypeId/properties/new', element: <PropertiesForm /> },
+  // Properties (standalone)
+  { path: 'properties', element: <PropertiesPage /> },
+  { path: 'properties/new', element: <PropertiesForm /> },
+  // Property Values (with property context)
+  { path: 'properties/:propertyId/values', element: <PropertyValuesPage /> },
+  { path: 'properties/:propertyId/values/new', element: <PropertyValuesForm /> },
+  // Property Values (standalone)
+  { path: 'property-values', element: <PropertyValuesPage /> },
+  { path: 'property-values/new', element: <PropertyValuesForm /> },
+]
+
+const PROTECTED_ROUTES = [...BASE_ROUTES, ...SIMPLE_ROUTES, ...PROPERTIES_ROUTES]
 
 function App() {
   const token = useSelector((state) => state.auth.token) || Cookies.get(STORAGE_KEYS.token)

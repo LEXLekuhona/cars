@@ -85,6 +85,7 @@ export const useEntityForm = ({
 		showToast,
 		toastText,
 		customFields,
+		setCustomFields,
 		updateCustomField,
 		
 		// Методы

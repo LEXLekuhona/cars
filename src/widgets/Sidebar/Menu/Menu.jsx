@@ -3,12 +3,37 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from "react-router-dom"
 import Sidebar from './subMenu'
+import AddDirectoryModal from '@shared/AddDirectoryModal/AddDirectoryModal'
+
+const btnBlockStyle = {
+	padding: '9px 60px',
+	marginTop: '50px',
+	marginBottom: '12px',
+	minWidth: '120px',
+	whiteSpace: 'nowrap',
+	fontSize: '14px'
+}
+const btnIconStyle = {
+	padding: '8px',
+	marginTop: '50px',
+	marginBottom: '12px',
+	width: '40px',
+	height: '40px',
+	borderRadius: '4px',
+	border: '1px solid #6c757d',
+	background: 'transparent',
+	color: '#fff',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'center'
+}
 
 function Menu() {
 
 	const dispatch = useDispatch()
 	const navigate = useNavigate()
 	const [collapsed, setCollapsed] = useState(false)
+	const [showAddDirectory, setShowAddDirectory] = useState(false)
 
 	const handleLogout = () => {
 		dispatch(logout())
@@ -48,47 +73,57 @@ function Menu() {
 		<>
 			<nav className="mt-2">
 				<Sidebar />
-				<div className='d-flex justify-content-center'>
+				<div className="d-flex flex-column align-items-center">
 					{collapsed ? (
-						// Иконка для свернутого состояния
-						<button
-							style={{
-								padding: "8px",
-								marginTop: "50px",
-								marginBottom: "12px",
-								width: "40px",
-								height: "40px",
-								borderRadius: "4px",
-								border: "1px solid #6c757d",
-								background: "transparent",
-								color: "#fff",
-								display: "flex",
-								alignItems: "center",
-								justifyContent: "center"
-							}}
-							type="button"
-							className="btn btn-outline-light"
-							onClick={handleLogout}
-							title="Выйти"
-						>
-							<i className="fas fa-sign-out-alt" style={{ fontSize: "16px" }} />
-						</button>
+						<>
+							<button
+								style={btnIconStyle}
+								type="button"
+								className="btn btn-outline-light"
+								onClick={() => setShowAddDirectory(true)}
+								title="Добавить справочник"
+							>
+								<i className="fas fa-plus" style={{ fontSize: '16px' }} />
+							</button>
+							<button
+								style={{ ...btnIconStyle, marginTop: '8px', marginBottom: '12px' }}
+								type="button"
+								className="btn btn-outline-light"
+								onClick={handleLogout}
+								title="Выйти"
+							>
+								<i className="fas fa-sign-out-alt" style={{ fontSize: '16px' }} />
+							</button>
+						</>
 					) : (
-						// Кнопка для развернутого состояния
-						<button style={{
-							padding: "9px 60px",
-							marginTop: "50px",
-							marginBottom: "12px",
-							minWidth: "120px",
-							whiteSpace: "nowrap",
-							fontSize: "14px"
-						}}
-							type="button"
-							className="btn btn-outline-light" onClick={handleLogout} >
-							Выйти
-						</button>
+						<>
+							<button
+								style={{ ...btnBlockStyle, marginTop: '50px', marginBottom: '8px', padding: '9px 13px'}}
+								type="button"
+								className="btn btn-outline-light"
+								onClick={() => setShowAddDirectory(true)}
+							>
+								Добавить справочник
+							</button>
+							<button
+								style={{ ...btnBlockStyle, marginTop: 0, marginBottom: '12px' }}
+								type="button"
+								className="btn btn-outline-light"
+								onClick={handleLogout}
+							>
+								Выйти
+							</button>
+						</>
 					)}
 				</div>
+				<AddDirectoryModal
+					show={showAddDirectory}
+					onClose={() => setShowAddDirectory(false)}
+					onSuccess={() => {
+						setShowAddDirectory(false)
+						window.dispatchEvent(new CustomEvent('directory-added'))
+					}}
+				/>
 				<div className='d-flex justify-content-center' style={{ width: '100%' }}>
 					<span style={{
 						color: '#aaa',

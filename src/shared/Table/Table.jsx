@@ -4,7 +4,7 @@ import { useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table'
 
-function TableGeneric({ data, loading, columns, addLink, addLabel, lengthId, filterId, page, size, onPageChange, onSizeChange }) {
+function TableGeneric({ data, loading, columns, addLink, addLabel, lengthId, filterId, page, size, onPageChange, onSizeChange, onAddClick }) {
   const memoColumns = useMemo(() => columns, [columns])
 
   const {
@@ -55,10 +55,17 @@ function TableGeneric({ data, loading, columns, addLink, addLabel, lengthId, fil
     <section className="content">
       <div className="container-fluid">
         <div style={{ marginBottom: '20px' }}>
-          <Link to={addLink} className="btn btn-outline-success">
-            <i className="fa fa-plus" aria-hidden="true"></i>
-            {' '}{addLabel}
-          </Link>
+          {onAddClick ? (
+            <button type="button" onClick={onAddClick} className="btn btn-outline-success">
+              <i className="fa fa-plus" aria-hidden="true"></i>
+              {' '}{addLabel}
+            </button>
+          ) : (
+            <Link to={addLink} className="btn btn-outline-success">
+              <i className="fa fa-plus" aria-hidden="true"></i>
+              {' '}{addLabel}
+            </Link>
+          )}
         </div>
         <div className="dataTables_wrapper no-footer">
           <div className="dataTables_length" id={lengthId}>
@@ -198,7 +205,7 @@ TableGeneric.propTypes = {
   data: PropTypes.array.isRequired,
   loading: PropTypes.bool,
   columns: PropTypes.array.isRequired,
-  addLink: PropTypes.string.isRequired,
+  addLink: PropTypes.string,
   addLabel: PropTypes.string.isRequired,
   lengthId: PropTypes.string,
   filterId: PropTypes.string,
@@ -206,6 +213,7 @@ TableGeneric.propTypes = {
   size: PropTypes.number,
   onPageChange: PropTypes.func,
   onSizeChange: PropTypes.func,
+  onAddClick: PropTypes.func,
 }
 
 export default TableGeneric

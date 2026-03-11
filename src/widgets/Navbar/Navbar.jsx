@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom"
+import { useEffect, useState } from "react"
 import { SIMPLE_DIRECTORIES } from '@shared/entities/simpleDirectories'
 
 // Маппинг путей к названиям страниц
@@ -8,6 +9,35 @@ const getPageTitle = (pathname) => {
 		acc[`/${entry.path}/new`] = `Добавить ${entry.label.toLowerCase()}`
 		return acc
 	}, {})
+
+	// Убираем query параметры из пути
+	const cleanPath = pathname.split('?')[0]
+
+	// Обработка динамических путей Properties
+	if (cleanPath.startsWith('/property-types')) {
+		if (cleanPath === '/property-types') return 'Типы свойств'
+		if (cleanPath === '/property-types/new') return 'Добавить тип свойства'
+		if (cleanPath.includes('/properties') && cleanPath.includes('/values')) {
+			if (cleanPath.endsWith('/new')) return 'Добавить значение свойства'
+			return 'Значения свойств'
+		}
+		if (cleanPath.includes('/properties')) {
+			if (cleanPath.endsWith('/new')) return 'Добавить свойство'
+			return 'Свойства'
+		}
+	}
+	if (cleanPath.startsWith('/properties')) {
+		if (cleanPath === '/properties') return 'Свойства'
+		if (cleanPath === '/properties/new') return 'Добавить свойство'
+		if (cleanPath.includes('/values')) {
+			if (cleanPath.endsWith('/new')) return 'Добавить значение свойства'
+			return 'Значения свойств'
+		}
+	}
+	if (cleanPath.startsWith('/property-values')) {
+		if (cleanPath === '/property-values') return 'Значения свойств'
+		if (cleanPath === '/property-values/new') return 'Добавить значение свойства'
+	}
 
 	const pathMap = {
 		'/': 'Главная страница',
@@ -19,59 +49,9 @@ const getPageTitle = (pathname) => {
 		'/generation/new': 'Добавить поколение',
 		'/year': 'Год',
 		'/year/new': 'Добавить год',
-		'/tire-diameter': 'Диаметр шин',
-		'/tire-diameter/new': 'Добавить диаметр шин',
-		'/tire-metric-profile': 'Профиль',
-		'/tire-metric-profile/new': 'Добавить профиль',
-		'/tire-metric-width': 'Ширина',
-		'/tire-metric-width/new': 'Добавить ширину',
-		'/tire-inch-height': 'Высота',
-		'/tire-inch-height/new': 'Добавить высоту',
-		'/tire-inch-width': 'Ширина',
-		'/tire-inch-width/new': 'Добавить ширину',
-		'/tires': 'Шины',
-		'/tires/new': 'Добавить шины',
-		'/tires-inch': 'Шины (дюймовая)',
-		'/tires-inch/new': 'Добавить шины (дюймовая)',
-		'/wheels': 'Диски',
-		'/wheels/new': 'Добавить диски',
-		'/wheel-width': 'Ширина',
-		'/wheel-width/new': 'Добавить ширину',
-		'/wheel-diameter': 'Диаметр',
-		'/wheel-diameter/new': 'Добавить диаметр',
-		'/wheel-drilling': 'Сверловка',
-		'/wheel-drilling/new': 'Добавить сверловку',
-		'/wheel-departure': 'Вылет',
-		'/wheel-departure/new': 'Добавить вылет',
-		'/wheel-ch-diameter': 'Диаметр ЦО',
-		'/wheel-ch-diameter/new': 'Добавить диаметр ЦО',
-		'/wheel-dependencies': 'Связь',
-		'/wheel-dependencies/new': 'Добавить связь',
-		'/oils': 'Масла',
-		'/oils/new': 'Добавить масла',
-		'/oil-type': 'Типы',
-		'/oil-type/new': 'Добавить тип',
-		'/oil-viscosity': 'Вязкость',
-		'/oil-viscosity/new': 'Добавить вязкость',
-		'/wipers': 'Дворники',
-		'/wipers/new': 'Добавить дворники',
-		'/wipers-length': 'Длина',
-		'/wipers-length/new': 'Добавить длину',
-		'/batteries': 'Аккумуляторы',
-		'/batteries/new': 'Добавить аккумуляторы',
-		'/battery-capacity': 'Емкость',
-		'/battery-capacity/new': 'Добавить емкость',
-		'/battery-starting-cur': 'Пусковой ток',
-		'/battery-starting-cur/new': 'Добавить пусковой ток',
-		'/battery-dimensions': 'Габариты',
-		'/battery-dimensions/new': 'Добавить габариты',
-		'/battery-polarity': 'Полярность',
-		'/battery-polarity/new': 'Добавить полярность',
-		...simplePaths
+		// Закомментированные старые пути параметров
+		// ...simplePaths
 	}
-
-	// Убираем query параметры из пути
-	const cleanPath = pathname.split('?')[0]
 
 	// Возвращаем название страницы или "Главная страница" по умолчанию
 	return pathMap[cleanPath] || 'Главная страница'
@@ -79,7 +59,19 @@ const getPageTitle = (pathname) => {
 
 function Navbar() {
 	const location = useLocation()
-	const pageTitle = getPageTitle(location.pathname)
+	const [dynamicTitle, setDynamicTitle] = useState(null)
+
+	useEffect(() => {
+		const onPageTitle = (e) => setDynamicTitle(e.detail?.title ?? null)
+		window.addEventListener('page-title', onPageTitle)
+		return () => window.removeEventListener('page-title', onPageTitle)
+	}, [])
+
+	useEffect(() => {
+		setDynamicTitle(null)
+	}, [location.pathname])
+
+	const pageTitle = dynamicTitle ?? getPageTitle(location.pathname)
 
 	return (
 		<>
