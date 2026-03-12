@@ -25,12 +25,12 @@ services:
   cars-prod:
     build:
       context: .
-      dockerfile: Dockerfile.prod
       target: production
     ports:
       - "80:80"
     environment:
       - NODE_ENV=production
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
@@ -45,7 +45,8 @@ services:
       context: .
       target: production
     ports:
-      - "8080:80"
+      - "8081:80"
     environment:
       - NODE_ENV=production
-    restart: unless-stopped 
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+    restart: unless-stopped

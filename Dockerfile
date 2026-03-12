@@ -20,7 +20,10 @@ RUN yarn build
 # Продакшн образ
 FROM nginx:alpine AS production
 
-# Копируем собранные файлы
+# Конфиг nginx с прокси на backend
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Копируем собранные файлы фронтенда
 COPY --from=builder /app/dist /usr/share/nginx/html
 
 # Открываем порт

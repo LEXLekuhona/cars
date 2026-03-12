@@ -1,4 +1,6 @@
-export const BASE_URL = 'http://185.239.50.252:8080'
+// При размещении фронта на том же сервере оставьте пустым или задайте префикс API (например /api).
+// Для локальной разработки с удалённым бэком задайте VITE_API_BASE_URL в .env (например http://185.239.50.252:8080).
+export const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 
 export const API_PATHS = {
   brands: '/brands',
