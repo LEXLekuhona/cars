@@ -3,17 +3,13 @@ import axios from "axios"
 import Cookies from 'js-cookie'
 import { BASE_URL, STORAGE_KEYS } from '../../shared/config'
 
-axios.defaults.baseURL = BASE_URL
-
-
 export const login = createAsyncThunk('auth/login', async ({ username, password }) => {
-    
     const data = new URLSearchParams({
         username,
         password
     })
 
-    const response = await axios.post('/auth/token', data, {
+    const response = await axios.post(`${BASE_URL}/auth/token`, data, {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/x-www-form-urlencoded'
