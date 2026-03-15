@@ -26,11 +26,13 @@ services:
     build:
       context: .
       target: production
+      args:
+        - VITE_API_BASE_URL=${VITE_API_BASE_URL:-/api}
     ports:
       - "80:80"
     environment:
       - NODE_ENV=production
-      - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+      - BACKEND_HOST=${BACKEND_HOST:-185.239.50.252:8080}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
@@ -44,9 +46,11 @@ services:
     build:
       context: .
       target: production
+      args:
+        - VITE_API_BASE_URL=${VITE_API_BASE_URL:-/api}
     ports:
       - "8081:80"
     environment:
       - NODE_ENV=production
-      - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+      - BACKEND_HOST=${BACKEND_HOST:-185.239.50.252:8080}
     restart: unless-stopped
