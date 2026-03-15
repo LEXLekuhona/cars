@@ -1,11 +1,16 @@
 // При размещении фронта на том же сервере оставьте пустым или задайте префикс API (например /api).
 // Для локальной разработки с удалённым бэком задайте VITE_API_BASE_URL в .env (например http://185.239.50.252:8080).
-const raw = import.meta.env.VITE_API_BASE_URL ?? ''
-// Путь без ведущего / при SPA по /api/ даёт запрос api/api/... — нормализуем путь к абсолютному.
-export const BASE_URL =
-  raw === '' || raw.startsWith('http://') || raw.startsWith('https://') || raw.startsWith('/')
+const raw = (import.meta.env.VITE_API_BASE_URL ?? '').trim()
+// Путь без ведущего / при SPA по /api/ даёт запрос api/api/... — нормализуем к абсолютному /api.
+let base =
+  raw === '' || raw.startsWith('http://') || raw.startsWith('https://')
     ? raw
-    : `/${raw}`
+    : raw.startsWith('/')
+      ? raw
+      : `/${raw}`
+// Защита от дублирования /api (напр. при ошибочном env или прокси).
+if (base.startsWith('/api/api')) base = base.replace(/^\/api\/api/, '/api')
+export const BASE_URL = base
 
 export const API_PATHS = {
   brands: '/brands',
